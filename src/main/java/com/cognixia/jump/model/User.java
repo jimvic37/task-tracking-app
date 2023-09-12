@@ -1,7 +1,9 @@
 package com.cognixia.jump.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,7 +11,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 public class User implements Serializable {
@@ -43,11 +49,15 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private String email;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<UserTask> session;
+
 	
 	public User() {
 		
 	}
-
+	
 	public User(Integer id, @NotBlank String username, @NotBlank String password, Role role, boolean enabled,
 			String email) {
 		super();
@@ -112,6 +122,10 @@ public class User implements Serializable {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", enabled="
 				+ enabled + ", email=" + email + "]";
 	}
+	
+	
+
+	
 	
 }
 
