@@ -45,11 +45,12 @@ public class SecurityConfiguration {
 		http.csrf().disable()
 			.authorizeRequests()
 			.antMatchers("/authenticate").permitAll()	// let anyone try to create a token
-			.antMatchers("/api/hello").permitAll()
-			.antMatchers("/api/admin").hasRole("ADMIN")
-			.antMatchers(HttpMethod.GET, "/api/user").hasRole("ADMIN") // don't want just anyone to be able to get all user info
-			.antMatchers("/api/all").permitAll()
-			.antMatchers(HttpMethod.POST, "/api/user").permitAll() // anyone can create a user
+			.antMatchers("/admin").hasRole("ADMIN")
+			.antMatchers(HttpMethod.GET, "/user").hasRole("ADMIN") // don't want just anyone to be able to get all user info
+			.antMatchers("/all").permitAll()
+			.antMatchers(HttpMethod.POST, "/user").permitAll() // anyone can create a user
+			.antMatchers(HttpMethod.PUT, "/user").permitAll() // anyone can update a user
+			.antMatchers(HttpMethod.DELETE, "/user").permitAll() // anyone can delete a user
 			.anyRequest().authenticated() // if not specified, all other end points need a user login
 			.and()
 			// tell spring secruity to NOT CREATE SESSIONS
