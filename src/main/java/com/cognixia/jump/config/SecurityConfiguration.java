@@ -20,30 +20,38 @@ import com.cognixia.jump.filter.JwtRequestFilter;
 
 @Configuration
 public class SecurityConfiguration {
-	
-	// ensure that the MyUserDetailsService that we created gets instantiated with this 
+
+	// ensure that the MyUserDetailsService that we created gets instantiated with this
 	// variable
 	@Autowired
 	UserDetailsService userDetailsService; // = new MyUserDetailsService();
-	
+
 	@Autowired
 	JwtRequestFilter jwtRequestFilter;
-	
+
 
 	// Authentication - who are you? (does this user exist in our database?)
 	@Bean
 	protected UserDetailsService userDetailsService() {
-		
+
 		return userDetailsService;
 	}
-	
-	
+
+
 	// Authorization - what do you want? (can this user access this endpoint?)
 	@Bean
 	protected SecurityFilterChain filterChain( HttpSecurity http ) throws Exception {
-		
+
 		http.csrf().disable()
 			.authorizeRequests()
+			.antMatchers("/task").permitAll()	// let anyone try to create a token
+			.antMatchers(HttpMethod.GET, "/task").permitAll() // don't want just anyone to be able to get all user info
+			.antMatchers(HttpMethod.POST, "/task").permitAll() // anyone can create a user
+
+			.antMatchers("/user_task").permitAll()	// let anyone try to create a token
+			.antMatchers(HttpMethod.GET, "/user_task").permitAll() // don't want just anyone to be able to get all user info
+			.antMatchers(HttpMethod.POST, "/user_task").permitAll() // anyone can create a user
+
 			.antMatchers("/authenticate").permitAll()	// let anyone try to create a token
 			.antMatchers("/api/hello").permitAll()
 			.antMatchers("/api/admin").hasRole("ADMIN")
@@ -64,20 +72,20 @@ public class SecurityConfiguration {
 
 		return http.build();
 	}
-	
+
 	// Encoder -> method that will encode/decode all the user passwords
 	@Bean
 	protected PasswordEncoder encoder() {
 
 //		 plain text encoder -> won't do any encoding
 		return NoOpPasswordEncoder.getInstance();
-		
+
 //		// there's many options for password encoding, use the algorithm you like or are asked
 //		// to use by your company
 //		return new BCryptPasswordEncoder();
-		
+
 	}
-	
+
 	// load the encoder & user details service that are needed for spring security to do authentication
 	@Bean
 	protected DaoAuthenticationProvider authenticationProvider() {
@@ -96,6 +104,6 @@ public class SecurityConfiguration {
 		return authConfig.getAuthenticationManager();
 	}
 
-	
-	
+
+
 }

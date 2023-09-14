@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.exception.ResourceNotFoundException;
+import com.cognixia.jump.model.Task;
 import com.cognixia.jump.model.User;
-import com.cognixia.jump.repository.UserRepository;
+import com.cognixia.jump.repository.TaskRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,7 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 public class TaskController {
 	@Autowired
-	UserRepository repo;
+	TaskRepository repo;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -33,7 +34,7 @@ public class TaskController {
 	@GetMapping("/task")
 	@Operation(summary = "Gets all tasks", description = "Returns a list of all tasks")
 	@ApiResponse(responseCode = "200", description = "Ok")
-	public List<User> getTasks() {
+	public List<Task> getTasks() {
 
 		return repo.findAll();
 	}
@@ -46,7 +47,7 @@ public class TaskController {
 	})
 	public ResponseEntity<?> getTaskById(@PathVariable int id) {
 
-		Optional<User> task = repo.findById(id);
+		Optional<Task> task = repo.findById(id);
 
 		if(task.isEmpty()) {
 			return ResponseEntity.status(404).body("Task not found");
@@ -56,35 +57,29 @@ public class TaskController {
 		}
 	}
 
-	@PostMapping("/user")
-	@Operation(summary = "Creates user", description = "Creates a user and returns the created trainer")
+    @PostMapping("/task")
+	@Operation(summary = "Creates task", description = "Creates a task and returns the created trainer")
 	@ApiResponse(responseCode = "201", description = "Ok")
-	public ResponseEntity<?> createTrainer(@RequestBody User user ) {
+	public ResponseEntity<?> createTrainer(@RequestBody Task task ) {
 
-		user.setId(null);
+		task.setId(null);
 
-		// will take the plain text password and encode it before it is saved to the db
-		// security isn't going to encode our passwords on its own
-// ###############################################################################
-// ''' Do we still need this code block here if the user is already logged in?'''
-		user.setPassword( encoder.encode( user.getPassword() ) );
-
-		User created = repo.save(user);
+		Task created = repo.save(task);
 
 		return ResponseEntity.status(201).body(created);
 	}
 
 	@PutMapping("/task")
-	@Operation(summary = "Updates task", description = "Updates a task and returns the updated user")
+	@Operation(summary = "Updates task", description = "Updates a task and returns the updated tasl")
 	@ApiResponse(responseCode = "200", description = "Ok")
-	public ResponseEntity<?> updateUser(@RequestBody User user) throws ResourceNotFoundException {
+	public ResponseEntity<?> updateTask(@RequestBody Task task) throws ResourceNotFoundException {
 
-		if (repo.existsById(user.getId())) {
-			User updated = repo.save(user);
+		if (repo.existsById(task.getId())) {
+			Task updated = repo.save(task);
 			return ResponseEntity.status(200).body(updated);
 		}
 
-		throw new ResourceNotFoundException("User", user.getId());
+		throw new ResourceNotFoundException("Task", task.getId());
 	}
 
 	@DeleteMapping("/task/{id}")
@@ -93,9 +88,9 @@ public class TaskController {
 		@ApiResponse(responseCode = "200", description = "Ok"),
 		@ApiResponse(responseCode = "404", description = "Task not found")
 	})
-	public ResponseEntity<User> deleteTask(@PathVariable int id) throws ResourceNotFoundException {
+	public ResponseEntity<Task> deleteTask(@PathVariable int id) throws ResourceNotFoundException {
 
-		Optional<User> found = repo.findById(id);
+		Optional<Task> found = repo.findById(id);
 
 		if (found.isEmpty()) {
 			throw new ResourceNotFoundException("Task", id);
