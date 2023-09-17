@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.cognixia.jump.model.UserTask;
 
 @Repository
-public interface SessionRepository extends JpaRepository<UserTask, Integer>{
-	
+public interface UserTaskRepository extends JpaRepository<UserTask, Integer> {
+
 }

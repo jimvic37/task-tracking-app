@@ -94,5 +94,15 @@ public class UserTask implements Serializable{
 				+ ", isCompleted=" + isCompleted + "]";
 	}
 	
+	public String toJson() {
+		
+		return "{\"id\" : " + id
+				+ ", \"task\" : \"" + task.toJson() + "\""
+				+ ", \"user\" : \"" + user.toJson() + "\""
+				+ ", \"currTime\" : \"" + currTime + "\""
+				+ ", \"isCompleted\" : \"" + isCompleted + "\"}";
+
+	}
+	
 	
 }

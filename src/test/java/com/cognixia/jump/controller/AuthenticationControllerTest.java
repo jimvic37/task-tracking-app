@@ -47,7 +47,7 @@ public class AuthenticationControllerTest {
 		
 		String uri = STARTING_URI + "/authenticate";
 		
-		User user = new User(null, "ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com");
+		User user = new User(null, "ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com", null);
 		
 		String json = "{\"username\" : \"" + user.getUsername()
 			+ "\", \"password\" : \"" + user.getPassword() + "\"}";
@@ -71,7 +71,7 @@ public class AuthenticationControllerTest {
 		
 		String uri = STARTING_URI + "/authenticate";
 		
-		User user = new User(null, "ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com");
+		User user = new User(null, "ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com", null);
 		
 		String json = "{\"username\" : \"" + user.getUsername()
 			+ "\", \"password\" : \"" + user.getPassword() + "\"}";
