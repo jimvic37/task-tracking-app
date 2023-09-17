@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity
 public class Task implements Serializable{
 	
@@ -25,30 +27,33 @@ public class Task implements Serializable{
 	private Integer id;
 	
 	@Column(nullable = true)
+	@Schema(description = "Name of the task", example = "Task 1", required = false)
 	private String name;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
+	@Schema(description = "Description of the task", example = "Recrod video interview", required = false)
 	private String description;
 
-	@Column(nullable = false)
-	private LocalDate time;
+//	@Column(nullable = false)
+//	@Schema(description = "Time of the task", example = "30:00", required = true)
+//	private LocalDate time;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-	private List<UserTask> session;
+	private List<UserTask> userTask;
 	
 	public Task() {
 		
 	}
-	
-	public Task(Integer id, String name, String description, LocalDate time, List<UserTask> session) {
+
+	public Task(Integer id, String name, String description, List<UserTask> userTask) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.time = time;
-		this.session = session;
+		this.userTask = userTask;
 	}
+
 
 	public Integer getId() {
 		return id;
@@ -74,27 +79,27 @@ public class Task implements Serializable{
 		this.description = description;
 	}
 
-	public LocalDate getTime() {
-		return time;
+	public List<UserTask> getUserTask() {
+		return userTask;
 	}
 
-	public void setTime(LocalDate time) {
-		this.time = time;
-	}
-
-	public List<UserTask> getSession() {
-		return session;
-	}
-
-	public void setSession(List<UserTask> session) {
-		this.session = session;
+	public void setUserTask(List<UserTask> userTask) {
+		this.userTask = userTask;
 	}
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", time=" + time + ", session="
-				+ session + "]";
+		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", userTask=" + userTask + "]";
 	}
+	
+	public String toJson() {
+		
+		return "{\"id\" : " + id
+				+ ", \"name\" : \"" + name + "\""
+				+ ", \"description\" : \"" + description + "\""
+				+ ", \"userTask\" : \"" + userTask + "\"";
+	}
+	
 	
 	
 	

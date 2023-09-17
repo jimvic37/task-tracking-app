@@ -17,6 +17,8 @@ import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity
 public class User implements Serializable {
 
@@ -33,33 +35,37 @@ public class User implements Serializable {
 	// unique and not null username
 	@Column(unique = true, nullable = false)
 	@NotBlank
+	@Schema(description = "Username of the user", example = "ash123", required = true)
 	private String username;
 	
 	@Column(nullable = false)
 	@NotBlank
+	@Schema(description = "Password of the task", example = "pass123", required = true)
 	private String password;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
+	@Schema(description = "Role of the user", example = "ROLE_USER", required = true)
 	private Role role;
 	
 	@Column( columnDefinition = "boolean default true" )
 	private boolean enabled; // true/false if user enabled/disabled
 	
 	@Column(nullable = false)
+	@Schema(description = "Email of the user", example = "ash123@gmail.com", required = true)
 	private String email;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<UserTask> session;
+	private List<UserTask> userTask;
 
 	
 	public User() {
 		
 	}
-	
+
 	public User(Integer id, @NotBlank String username, @NotBlank String password, Role role, boolean enabled,
-			String email) {
+			String email, List<UserTask> userTask) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -67,6 +73,7 @@ public class User implements Serializable {
 		this.role = role;
 		this.enabled = enabled;
 		this.email = email;
+		this.userTask = userTask;
 	}
 
 	public Integer getId() {
@@ -117,16 +124,41 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
+	public List<UserTask> getUserTask() {
+		return userTask;
+	}
+
+	public void setUserTask(List<UserTask> userTask) {
+		this.userTask = userTask;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", enabled="
-				+ enabled + ", email=" + email + "]";
+				+ enabled + ", email=" + email + ", userTask=" + userTask + "]";
 	}
-	
-	
 
-	
-	
+	public String toJson() {
+		
+		if (this.userTask != null) {
+			return "{\"id\" : " + id
+					+ ", \"username\" : \"" + username + "\""
+					+ ", \"password\" : \"" + password + "\""
+					+ ", \"role\" : \"" + role + "\""
+					+ ", \"enabled\" : \"" + enabled + "\""
+					+ ", \"email\" : \"" + email + "\""
+					+ ", \"userTask\" : \"" + userTask + "\"}";
+		}
+		// needed to handle null team values
+		else {
+			return "{\"id\" : " + id
+					+ ", \"username\" : \"" + username + "\""
+					+ ", \"password\" : \"" + password + "\""
+					+ ", \"role\" : \"" + role + "\""
+					+ ", \"enabled\" : \"" + enabled + "\""
+					+ ", \"email\" : \"" + email + "\"}";
+		}
+	}
 }
 
 
