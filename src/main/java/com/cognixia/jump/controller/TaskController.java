@@ -60,7 +60,7 @@ public class TaskController {
     @PostMapping("/task")
 	@Operation(summary = "Creates task", description = "Creates a task and returns the created trainer")
 	@ApiResponse(responseCode = "201", description = "Ok")
-	public ResponseEntity<?> createTrainer(@RequestBody Task task ) {
+	public ResponseEntity<?> createTask(@RequestBody Task task ) {
 
 		task.setId(null);
 

@@ -117,13 +117,13 @@ public class UserTaskControllerTest {
 	public void testGetUserTaskById() throws Exception {
 		int id = 1;
 		String uri = STARTING_URI + "/userTask/{id}";
-		Optional<UserTask> userTask = Optional.ofNullable(new UserTask(null, new Task(null, "task1", "description1", null), new User(null, "Ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com", null), null, true));
+		Optional<UserTask> userTask = Optional.ofNullable(new UserTask(id, new Task(null, "task1", "description1", null), new User(null, "Ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com", null), null, true));
 		
 		when( repo.findById(userTask.get().getId()) ).thenReturn(userTask);
 		
-		mvc.perform( get(uri)
+		mvc.perform(get(uri,id)
 			.with(SecurityMockMvcRequestPostProcessors.jwt()))
-			.andDo( print() ) 
+			.andDo( print()) 
 			.andExpect( status().isOk() )
 			.andExpect( content().contentType( MediaType.APPLICATION_JSON_VALUE ) ) 
 			.andExpect(jsonPath("$.id").value(userTask.get().getId()))
@@ -193,7 +193,6 @@ public class UserTaskControllerTest {
 			.andExpect(jsonPath("$.currTime").value(userTask.getCurrTime()))
 			.andExpect(jsonPath("$.isCompleted").value(userTask.getIsCompleted()));
   		
-  		verify(encoder, times(1)).encode(Mockito.any(String.class));
 		verify(repo, times(1)).save(Mockito.any(UserTask.class));
 	}
 	
@@ -202,7 +201,7 @@ public class UserTaskControllerTest {
 		
 		String uri = STARTING_URI + "/userTask";
 		
-  		UserTask userTask = new UserTask(null, new Task(null, "task1", "description1", null), new User(null, "Ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com", null), null, true);
+  		UserTask userTask = new UserTask(1, new Task(null, "task1", "description1", null), new User(null, "Ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com", null), null, true);
 		
 		when(repo.existsById(Mockito.any(Integer.class))).thenReturn(true);
 		when(repo.save(Mockito.any(UserTask.class))).thenReturn(userTask);
@@ -238,7 +237,7 @@ public class UserTaskControllerTest {
 		
 		String uri = STARTING_URI + "/userTask";
 		
-  		UserTask userTask = new UserTask(null, new Task(null, "task1", "description1", null), new User(null, "Ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com", null), null, true);
+  		UserTask userTask = new UserTask(1, new Task(1, "task1", "description1", null), new User(1, "Ash", "pw123", User.Role.ROLE_USER, true, "a.ketchum@email.com", null), null, true);
 		
 		when(repo.existsById(Mockito.any(Integer.class))).thenReturn(false);
 		

@@ -44,6 +44,10 @@ public class SecurityConfiguration {
 
 		http.csrf().disable()
 			.authorizeRequests()
+			.antMatchers("/v3/api-docs").permitAll()
+			.antMatchers("/v3/api-docs.yaml").permitAll()
+			.antMatchers("/swagger-ui/index.html").permitAll()
+			
 			.antMatchers("/task").permitAll()	// let anyone try to create a token
 			.antMatchers(HttpMethod.GET, "/task").permitAll() // don't want just anyone to be able to get all user info
 			.antMatchers(HttpMethod.POST, "/task").permitAll() // anyone can create a user

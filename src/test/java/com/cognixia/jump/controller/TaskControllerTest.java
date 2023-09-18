@@ -134,7 +134,7 @@ public class TaskControllerTest {
   		
   		String uri = STARTING_URI + "/task";
   		
-  		Task task = new Task(null, "task1", "description1", null);
+  		Task task = new Task(1, "task1", "description1", null);
   		
   		when(repo.save(Mockito.any(Task.class))).thenReturn(task);
   		
@@ -149,7 +149,6 @@ public class TaskControllerTest {
 			.andExpect(jsonPath("$.name").value(task.getName()))
 			.andExpect(jsonPath("$.description").value(task.getDescription()));
   		
-  		verify(encoder, times(1)).encode(Mockito.any(String.class));
 		verify(repo, times(1)).save(Mockito.any(Task.class));
 	}
 	
@@ -158,7 +157,7 @@ public class TaskControllerTest {
 		
 		String uri = STARTING_URI + "/task";
 		
-  		Task task = new Task(null, "task1", "description1", null);
+  		Task task = new Task(1, "task1", "description1", null);
 		
 		when(repo.existsById(Mockito.any(Integer.class))).thenReturn(true);
 		when(repo.save(Mockito.any(Task.class))).thenReturn(task);
@@ -183,7 +182,7 @@ public class TaskControllerTest {
 		
 		String uri = STARTING_URI + "/task";
 		
-  		Task task = new Task(null, "task1", "description1", null);
+  		Task task = new Task(1, "task1", "description1", null);
 		
 		when(repo.existsById(Mockito.any(Integer.class))).thenReturn(false);
 		
