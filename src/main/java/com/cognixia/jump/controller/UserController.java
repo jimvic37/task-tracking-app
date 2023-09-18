@@ -59,7 +59,7 @@ public class UserController {
 	@PostMapping("/user")
 	@Operation(summary = "Creates user", description = "Creates a user and returns the created trainer")
 	@ApiResponse(responseCode = "201", description = "Ok")
-	public ResponseEntity<?> createTrainer(@RequestBody User user ) {
+	public ResponseEntity<?> createUser(@RequestBody User user ) {
 		
 		user.setId(null);
 		

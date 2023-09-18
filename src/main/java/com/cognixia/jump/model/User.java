@@ -1,5 +1,7 @@
 package com.cognixia.jump.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -139,25 +141,13 @@ public class User implements Serializable {
 	}
 
 	public String toJson() {
-		
-		if (this.userTask != null) {
-			return "{\"id\" : " + id
-					+ ", \"username\" : \"" + username + "\""
-					+ ", \"password\" : \"" + password + "\""
-					+ ", \"role\" : \"" + role + "\""
-					+ ", \"enabled\" : \"" + enabled + "\""
-					+ ", \"email\" : \"" + email + "\""
-					+ ", \"userTask\" : \"" + userTask + "\"}";
-		}
-		// needed to handle null team values
-		else {
-			return "{\"id\" : " + id
-					+ ", \"username\" : \"" + username + "\""
-					+ ", \"password\" : \"" + password + "\""
-					+ ", \"role\" : \"" + role + "\""
-					+ ", \"enabled\" : \"" + enabled + "\""
-					+ ", \"email\" : \"" + email + "\"}";
-		}
+	    try {
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        return objectMapper.writeValueAsString(this);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "{}"; // Return an empty JSON object in case of an error.
+	    }
 	}
 }
 

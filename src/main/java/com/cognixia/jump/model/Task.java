@@ -1,5 +1,7 @@
 package com.cognixia.jump.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -93,11 +95,13 @@ public class Task implements Serializable{
 	}
 	
 	public String toJson() {
-		
-		return "{\"id\" : " + id
-				+ ", \"name\" : \"" + name + "\""
-				+ ", \"description\" : \"" + description + "\""
-				+ ", \"userTask\" : \"" + userTask + "\"";
+	    try {
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        return objectMapper.writeValueAsString(this);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "{}"; // Return an empty JSON object in case of an error.
+	    }
 	}
 	
 	

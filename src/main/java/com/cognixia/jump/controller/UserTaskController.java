@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.model.UserTask;
-import com.cognixia.jump.model.User;
-import com.cognixia.jump.repository.TaskRepository;
+import com.cognixia.jump.repository.UserTaskRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,12 +25,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 public class UserTaskController {
 	@Autowired
-	TaskRepository repo;
+	UserTaskRepository repo;
 
 	@Autowired
 	PasswordEncoder encoder;
 
-	@GetMapping("/user_task")
+	@GetMapping("/userTask")
 	@Operation(summary = "Gets all user tasks", description = "Returns a list of all user tasks")
 	@ApiResponse(responseCode = "200", description = "Ok")
 	public List<UserTask> getTasks() {
@@ -39,7 +38,7 @@ public class UserTaskController {
 		return repo.findAll();
 	}
 
-	@GetMapping("/user_task/{id}")
+	@GetMapping("/userTask/{id}")
 	@Operation(summary = "Gets user_task by ID", description = "Returns a user_task with the ID")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "Ok"),
@@ -57,7 +56,7 @@ public class UserTaskController {
 		}
 	}
 
-    @PostMapping("/user_task")
+    @PostMapping("/userTask")
 	@Operation(summary = "Creates task", description = "Creates a task and returns the created trainer")
 	@ApiResponse(responseCode = "201", description = "Ok")
 	public ResponseEntity<?> createTrainer(@RequestBody UserTask task ) {
@@ -69,7 +68,7 @@ public class UserTaskController {
 		return ResponseEntity.status(201).body(created);
 	}
 
-	@PutMapping("/user_task")
+	@PutMapping("/userTask")
 	@Operation(summary = "Updates user_task", description = "Updates a user_task and returns the updated user_task")
 	@ApiResponse(responseCode = "200", description = "Ok")
 	public ResponseEntity<?> updateTask(@RequestBody UserTask task) throws ResourceNotFoundException {
@@ -82,7 +81,7 @@ public class UserTaskController {
 		throw new ResourceNotFoundException("Task", task.getId());
 	}
 
-	@DeleteMapping("/task/{id}")
+	@DeleteMapping("/userTask/{id}")
 	@Operation(summary = "Deletes task by ID", description = "Deletes a task and returns the deleted task")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "Ok"),
