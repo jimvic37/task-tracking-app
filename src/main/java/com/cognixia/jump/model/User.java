@@ -59,7 +59,7 @@ public class User implements Serializable {
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<UserTask> userTask;
+	private List<Task> task;
 
 	
 	public User() {
@@ -67,7 +67,7 @@ public class User implements Serializable {
 	}
 
 	public User(Integer id, @NotBlank String username, @NotBlank String password, Role role, boolean enabled,
-			String email, List<UserTask> userTask) {
+			String email, List<Task> task) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -75,7 +75,7 @@ public class User implements Serializable {
 		this.role = role;
 		this.enabled = enabled;
 		this.email = email;
-		this.userTask = userTask;
+		this.task = task;
 	}
 
 	public Integer getId() {
@@ -126,19 +126,15 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public List<UserTask> getUserTask() {
-		return userTask;
+
+	public List<Task> getTask() {
+		return task;
 	}
 
-	public void setUserTask(List<UserTask> userTask) {
-		this.userTask = userTask;
+	public void setTask(List<Task> task) {
+		this.task = task;
 	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", enabled="
-				+ enabled + ", email=" + email + ", userTask=" + userTask + "]";
-	}
+	
 
 	public String toJson() {
 	    try {

@@ -11,11 +11,13 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 
 @Configuration
+@EnableSwagger2
 public class OpenAPIConfig {
 
     @Bean

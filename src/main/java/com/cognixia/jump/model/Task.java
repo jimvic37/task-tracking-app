@@ -3,19 +3,14 @@ package com.cognixia.jump.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -35,25 +30,27 @@ public class Task implements Serializable{
 	@Column(nullable = true)
 	@Schema(description = "Description of the task", example = "Recrod video interview", required = false)
 	private String description;
-
-//	@Column(nullable = false)
-//	@Schema(description = "Time of the task", example = "30:00", required = true)
-//	private LocalDate time;
 	
-	@JsonProperty(access = Access.WRITE_ONLY)
-	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-	private List<UserTask> userTask;
+	@Column(columnDefinition = "boolean default false")
+	@Schema(description = "Status of the task", example = "Completed", required = false)
+	private Boolean isCompleted;
+	
+	@ManyToOne
+	@JoinColumn( name = "username", referencedColumnName = "username")
+	private User user;
 	
 	public Task() {
 		
 	}
-
-	public Task(Integer id, String name, String description, List<UserTask> userTask) {
+	
+	
+	public Task(Integer id, String name, String description, Boolean isCompleted, User user) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.userTask = userTask;
+		this.isCompleted = isCompleted;
+		this.user = user;
 	}
 
 
@@ -81,19 +78,19 @@ public class Task implements Serializable{
 		this.description = description;
 	}
 
-	public List<UserTask> getUserTask() {
-		return userTask;
+	public Boolean getIsCompleted() {
+		return isCompleted;
 	}
 
-	public void setUserTask(List<UserTask> userTask) {
-		this.userTask = userTask;
-	}
-
-	@Override
-	public String toString() {
-		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", userTask=" + userTask + "]";
+	public void setIsCompleted(Boolean isCompleted) {
+		this.isCompleted = isCompleted;
 	}
 	
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public String toJson() {
 	    try {
 	        ObjectMapper objectMapper = new ObjectMapper();
