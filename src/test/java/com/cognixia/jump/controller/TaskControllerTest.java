@@ -66,8 +66,8 @@ public class TaskControllerTest {
 		
 		List<Task> tasks = new ArrayList<>();
 		
-		tasks.add(new Task(null, "task1", "description1", null));
-		tasks.add(new Task(null, "task2", "description2", null));
+		tasks.add(new Task(null, "task1", "description1", true, null));
+		tasks.add(new Task(null, "task2", "description2", true, null));
 		
 		when(repo.findAll()).thenReturn(tasks);
 		
@@ -80,9 +80,11 @@ public class TaskControllerTest {
 			.andExpect(jsonPath("$[0].id").value(tasks.get(0).getId()))
 			.andExpect(jsonPath("$[0].name").value(tasks.get(0).getName()))
 			.andExpect(jsonPath("$[0].description").value(tasks.get(0).getDescription()))
+			.andExpect(jsonPath("$[0].isCompleted").value(tasks.get(0).getIsCompleted()))
 			.andExpect(jsonPath("$[1].id").value(tasks.get(1).getId()))
 			.andExpect(jsonPath("$[1].name").value(tasks.get(1).getName()))
-			.andExpect(jsonPath("$[1].description").value(tasks.get(1).getDescription()));
+			.andExpect(jsonPath("$[1].description").value(tasks.get(1).getDescription()))
+			.andExpect(jsonPath("$[1].isCompleted").value(tasks.get(1).getIsCompleted()));
 		
 		verify(repo, times(1)).findAll();
 		verifyNoMoreInteractions(repo);
@@ -94,7 +96,7 @@ public class TaskControllerTest {
 		int id = 1;
 		String uri = STARTING_URI + "/task/{id}";
 		
-		Optional<Task> task = Optional.of(new Task(null, "task1", "description1", null));
+		Optional<Task> task = Optional.of(new Task(null, "task1", "description1",true, null));
 		
 		when(repo.findById(id)).thenReturn(task);
 				
@@ -105,7 +107,9 @@ public class TaskControllerTest {
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 			.andExpect(jsonPath("$.id").value(task.get().getId()))
 			.andExpect(jsonPath("$.name").value(task.get().getName()))
-			.andExpect(jsonPath("$.description").value(task.get().getDescription()));
+			.andExpect(jsonPath("$.description").value(task.get().getDescription()))
+			.andExpect(jsonPath("$.isCompleted").value(task.get().getIsCompleted()));
+
 
 		verify(repo, times(1)).findById(id);
 		verifyNoMoreInteractions(repo);
@@ -134,7 +138,7 @@ public class TaskControllerTest {
   		
   		String uri = STARTING_URI + "/task";
   		
-  		Task task = new Task(1, "task1", "description1", null);
+  		Task task = new Task(1, "task1", "description1", true, null);
   		
   		when(repo.save(Mockito.any(Task.class))).thenReturn(task);
   		
@@ -147,7 +151,8 @@ public class TaskControllerTest {
   			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 			.andExpect(jsonPath("$.id").value(task.getId()))
 			.andExpect(jsonPath("$.name").value(task.getName()))
-			.andExpect(jsonPath("$.description").value(task.getDescription()));
+			.andExpect(jsonPath("$.description").value(task.getDescription()))
+			.andExpect(jsonPath("$.isCompleted").value(task.getIsCompleted()));
   		
 		verify(repo, times(1)).save(Mockito.any(Task.class));
 	}
@@ -157,7 +162,7 @@ public class TaskControllerTest {
 		
 		String uri = STARTING_URI + "/task";
 		
-  		Task task = new Task(1, "task1", "description1", null);
+  		Task task = new Task(1, "task1", "description1", true, null);
 		
 		when(repo.existsById(Mockito.any(Integer.class))).thenReturn(true);
 		when(repo.save(Mockito.any(Task.class))).thenReturn(task);
@@ -171,7 +176,8 @@ public class TaskControllerTest {
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 			.andExpect(jsonPath("$.id").value(task.getId()))
 			.andExpect(jsonPath("$.name").value(task.getName()))
-			.andExpect(jsonPath("$.description").value(task.getDescription()));
+			.andExpect(jsonPath("$.description").value(task.getDescription()))
+			.andExpect(jsonPath("$.isCompleted").value(task.getIsCompleted()));
 		
 		verify(repo, times(1)).existsById(Mockito.any(Integer.class));
 		verify(repo, times(1)).save(Mockito.any(Task.class));
@@ -182,7 +188,7 @@ public class TaskControllerTest {
 		
 		String uri = STARTING_URI + "/task";
 		
-  		Task task = new Task(1, "task1", "description1", null);
+  		Task task = new Task(1, "task1", "description1", true, null);
 		
 		when(repo.existsById(Mockito.any(Integer.class))).thenReturn(false);
 		
@@ -203,7 +209,7 @@ public class TaskControllerTest {
 		
 		int id = 1;
 		String uri = STARTING_URI + "/task/{id}";
-		Optional<Task> trainer = Optional.of(new Task(null, "task1", "description1", null));
+		Optional<Task> trainer = Optional.of(new Task(null, "task1", "description1", true, null));
 		
 		when(repo.findById(id)).thenReturn(trainer);
 		

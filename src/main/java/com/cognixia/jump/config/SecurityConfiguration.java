@@ -15,10 +15,14 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.cognixia.jump.filter.JwtRequestFilter;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @Configuration
+@EnableSwagger2
 public class SecurityConfiguration {
 
 	// ensure that the MyUserDetailsService that we created gets instantiated with this
@@ -47,7 +51,8 @@ public class SecurityConfiguration {
 			.antMatchers("/v3/api-docs").permitAll()
 			.antMatchers("/v3/api-docs.yaml").permitAll()
 			.antMatchers("/swagger-ui/index.html").permitAll()
-			
+			.requestMatchers(new AntPathRequestMatcher("/v3/**")).permitAll()
+			.requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
 			.antMatchers("/task").permitAll()	// let anyone try to create a token
 			.antMatchers(HttpMethod.GET, "/task").permitAll() // don't want just anyone to be able to get all user info
 			.antMatchers(HttpMethod.POST, "/task").permitAll() // anyone can create a user

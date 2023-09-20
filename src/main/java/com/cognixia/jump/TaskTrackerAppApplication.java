@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 
+
 @SpringBootApplication
 @OpenAPIDefinition(
 		info = @Info(title = "Taks tracker App", version = "1.0",

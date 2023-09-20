@@ -27,7 +27,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		Optional<User> userFound = repo.findByUsername(username);
+		Optional<User> userFound = Optional.ofNullable(repo.findByUsername(username));
 		
 		// if username doesn't exist in the table, throw exception...
 		if(userFound.isEmpty()) {
