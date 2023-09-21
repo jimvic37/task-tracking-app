@@ -23,11 +23,11 @@ public class Task implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(nullable = true)
+	@Column(nullable = false)
 	@Schema(description = "Name of the task", example = "Task 1", required = false)
 	private String name;
 	
-	@Column(nullable = true)
+	@Column(nullable = false)
 	@Schema(description = "Description of the task", example = "Recrod video interview", required = false)
 	private String description;
 	
@@ -86,6 +86,10 @@ public class Task implements Serializable{
 		this.isCompleted = isCompleted;
 	}
 	
+	
+	public User getUser() {
+		return user;
+	}
 	
 	public void setUser(User user) {
 		this.user = user;
