@@ -103,18 +103,28 @@ public class TaskController {
 	     }
 	 }
 
-	@PutMapping("/task")
-	@Operation(summary = "Updates task", description = "Updates a task and returns the updated tasl")
-	@ApiResponse(responseCode = "200", description = "Ok")
-	public ResponseEntity<?> updateTask(@RequestBody Task task) throws ResourceNotFoundException {
+	 @PutMapping("/task")
+	 @Operation(summary = "Updates task", description = "Updates a task and returns the updated task")
+	 @ApiResponse(responseCode = "200", description = "Ok")
+	 public ResponseEntity<?> updateTask(@RequestBody Task updatedTask) throws ResourceNotFoundException {
 
-		if (taskRepo.existsById(task.getId())) {
-			Task updated = taskRepo.save(task);
-			return ResponseEntity.status(200).body(updated);
-		}
+	     // Check if the task with the given ID exists
+	     Optional<Task> existingTaskOptional = taskRepo.findById(updatedTask.getId());
 
-		throw new ResourceNotFoundException("Task", task.getId());
-	}
+	     if (existingTaskOptional.isPresent()) {
+	         Task existingTask = existingTaskOptional.get();
+	         
+	         // Set the user from the existing task to the updated task
+	         updatedTask.setUser(existingTask.getUser());
+
+	         // Save the updated task
+	         Task updated = taskRepo.save(updatedTask);
+
+	         return ResponseEntity.status(200).body(updated);
+	     }
+
+	     throw new ResourceNotFoundException("Task", updatedTask.getId());
+	 }
 
 	@DeleteMapping("/task/{id}")
 	@Operation(summary = "Deletes task by ID", description = "Deletes a task and returns the deleted task")
